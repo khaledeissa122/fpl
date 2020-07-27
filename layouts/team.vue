@@ -9,18 +9,27 @@
       fixed
       dark
     >
-      <v-img
-        contain
-        :aspect-ratio="1"
-        class="pr-1 pl-1"
-        max-width="50"
-        width="50"
-        height="50"
-        max-height="50"
-        transition="scale-transition"
-        :src="require('~/assets/img/circil.png')"
-      ></v-img>
-      <v-toolbar-title v-text="title" />
+      <n-link
+        to="/"
+        style="
+    display: contents;
+    text-decoration: none;
+    color: white;
+"
+      >
+        <v-img
+          contain
+          :aspect-ratio="1"
+          class="pr-1 pl-1"
+          max-width="50"
+          width="50"
+          height="50"
+          max-height="50"
+          transition="scale-transition"
+          :src="require('~/assets/img/circil.png')"
+        ></v-img>
+        <v-toolbar-title v-text="title" />
+      </n-link>
       <v-spacer />
       <v-switch
         class="mt-6"
@@ -43,7 +52,11 @@
             <v-row style="height:100%" justify="center" align="center">
               <v-card class="text-center">
                 <v-card-text class="headline px-12">
-                  <h2>{{$route.params.id ? $route.params.id : 'توقع نتائج الجولة'}}</h2>
+                  <h2>
+                    {{
+                      $route.params.id ? $route.params.id : "توقع نتائج الجولة"
+                    }}
+                  </h2>
                   <!-- <h2>{{$route.name == results ? 'توقع نتائج الجولة' : $route.params.id}}</h2> -->
                 </v-card-text>
               </v-card>
