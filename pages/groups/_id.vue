@@ -141,6 +141,18 @@ export default {
       ]
     };
   },
+      head() {
+    return {
+      title: `"FPL Groups | ${this.$route.params.id} group"`,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "For fantasy premier league player groups competition make your group now with your friends"
+        }
+      ]
+    };
+  },
   methods: {
     ...mapActions("enduser", ["getGroupData"]),
     // async fetchSomething() {

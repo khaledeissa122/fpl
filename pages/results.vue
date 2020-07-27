@@ -155,6 +155,20 @@ export default {
           }
         });
       });
+      function compare(a, b) {
+        // Use toUpperCase() to ignore character casing
+        const bandA = a.sameId;
+        const bandB = b.sameId;
+
+        let comparison = 0;
+        if (bandA > bandB) {
+          comparison = 1;
+        } else if (bandA < bandB) {
+          comparison = -1;
+        }
+        return comparison;
+      }
+      this.teamsArr = finalArr.sort(compare);
     },
 
     async getLiveGameweek() {
@@ -197,6 +211,18 @@ export default {
         }
       });
     }
+  },
+      head() {
+    return {
+      title: "FPL Groups | Results Expectation",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "For fantasy premier league player groups competition make your group now with your friends"
+        }
+      ]
+    };
   },
   computed: {
     ...mapState("enduser", ["teams"]),

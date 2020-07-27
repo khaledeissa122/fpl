@@ -121,6 +121,18 @@ export default {
       localStorage.setItem("switch1", this.switch1);
     }
   },
+  head() {
+    return {
+      title: "FPL Groups",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "For fantasy premier league player groups competition make your group now with your friends"
+        }
+      ]
+    };
+  },
   mounted() {
     var mode = localStorage.getItem("switch1");
     var val = mode === "true";

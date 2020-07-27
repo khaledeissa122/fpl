@@ -110,6 +110,7 @@ export default {
       localStorage.setItem("switch1", this.switch1);
     }
   },
+
   mounted() {
     var mode = localStorage.getItem("switch1");
     var val = mode === "true";
