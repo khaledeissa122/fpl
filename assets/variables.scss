@@ -1,0 +1,36 @@
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+//
+// The variables you want to modify
+// $font-size-root: 20px;
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+$body-font-family: 'Cairo', sans-serif !important;
+
+//specificity needs to be taken into consideration for some components
+//because !important has been assigned to their css
+//https://dev.to/emmabostian/css-specificity-1kca
+// html,
+// body,
+// .v-application {
+//   font-family: $body-font-family;
+// }
+// //added all typography helper classes because of css specificity override
+// //https://vuetifyjs.com/en/styles/typography#typography
+// .v-application {
+//     .display-4,
+//     .display-3,
+//     .display-2,
+//     .display-1,
+//     .headline,
+//     .title,
+//     .subtitle-1,
+//     .subtitle-2,
+//     .body-1,
+//     .body-2,
+//     .caption,
+//     .overline
+//     {
+//         font-family: $body-font-family;
+//     }
+// }
+// @import '~vuetify/src/styles/settings/_variables.scss';
