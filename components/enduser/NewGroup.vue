@@ -213,14 +213,14 @@ export default {
           if (snapshot.empty) {
             this.success = true;
             this.isUsernameError = false;
-            this.successMsg = "this username is Available";
+            this.successMsg = "هذا الاسم متاح ";
             this.usernameErrorMsg = "";
             console.log("هذا الاسم متاح");
           } else {
             this.isUsernameError = true;
             this.success = false;
             this.usernameErrorMsg = "هذا الاسم غير متاح";
-            console.log("this username is  not Available");
+
           }
         })
         .catch(err => {
