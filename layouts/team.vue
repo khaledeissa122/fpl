@@ -34,7 +34,7 @@
         <v-layout class="ma-n3" justify-center align-center>
           <v-img
             class="banner"
-            src="/bg12.jpg"
+            src="/bg2.jpg"
             :aspect-ratio="1"
             transition="scale-transition"
             height="400"
