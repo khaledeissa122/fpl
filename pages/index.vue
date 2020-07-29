@@ -25,8 +25,7 @@
               <v-row justify="center">
                 <v-btn
                   color="teal"
-                  class="px-8 mb-3 ml-3"
-                  large
+                  class="px-2 mb-3 ml-3"
                   nuxt
                   to="/results"
                 >
@@ -34,8 +33,7 @@
                 </v-btn>
                 <v-btn
                   color="teal"
-                  class="px-8 mb-3 ml-3"
-                  large
+                  class="px-4 mb-3 ml-3"
                   @click="openNewGroup = !openNewGroup"
                 >
                   <v-icon left dark>mdi-account-multiple-plus</v-icon>
@@ -44,8 +42,8 @@
                 <v-btn
                   outlined
                   color="white"
-                  class="px-8"
-                  large
+                  class="px-4"
+
                   @click="openVideo = !openVideo"
                 >
                   <v-icon left dark>mdi-information</v-icon>
