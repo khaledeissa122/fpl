@@ -46,8 +46,7 @@
                   color="white"
                   class="px-8"
                   large
-                  nuxt
-                  to="/inspire"
+                  @click="openVideo = !openVideo"
                 >
                   <v-icon left dark>mdi-information</v-icon>
                   طريقة الانضمام الي المسابقه
@@ -123,6 +122,7 @@
       </v-data-table>
     </v-card>
     <NewGroup :openNewGroup="openNewGroup" @close="openNewGroup = false" />
+    <Video :openVideo="openVideo" @close="openVideo = false" />
     <!-- <joinToGroup
       :openjoinToGroup="openjoinToGroup"
       @close="openjoinToGroup = false"
@@ -134,18 +134,21 @@
 import Logo from "~/components/Logo.vue";
 // import VuetifyLogo from "~/components/VuetifyLogo.vue";
 import NewGroup from "~/components/enduser/NewGroup.vue";
+import Video from "~/components/enduser/Video.vue";
 import { getCollectionwithid } from "@/services/firestore/methods.js";
 import { mapState, mapActions } from "vuex";
 export default {
   components: {
     Logo,
-    NewGroup
+    NewGroup,
+    Video
   },
   data() {
     return {
       groupsArr: null,
       sortedGroups: null,
       openNewGroup: false,
+      openVideo:false,
       teamsData: null,
       search: "",
       headers: [
