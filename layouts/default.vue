@@ -12,23 +12,26 @@
       <n-link
         to="/"
         style="
-    display: contents;
-    text-decoration: none;
-    color: white;
-"
+            display: contents;
+            text-decoration: none;
+            color: white;
+        "
       >
+        <div>
+          <v-toolbar-title v-text="title" class="text-left mb-n3 ml-2" />
+          <small class="ml-2">Fantasy premier league</small>
+        </div>
         <v-img
           contain
           :aspect-ratio="1"
           class="pr-1 pl-1"
-          max-width="50"
-          width="50"
-          height="50"
-          max-height="50"
+          max-width="40"
+          width="40"
+          height="40"
+          max-height="40"
           transition="scale-transition"
-          :src="require('~/assets/img/circil.png')"
+          src="/circil.png"
         ></v-img>
-        <v-toolbar-title v-text="title" />
       </n-link>
       <v-spacer />
       <!-- <v-btn  text color="white" class="pa-1 ml-2" large nuxt to="/results">
@@ -43,34 +46,6 @@
         inset
         :label="switch1 ? 'ليل' : 'نهار'"
       ></v-switch>
-      <!-- <v-app-bar-nav-icon /> -->
-      <!-- <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn> -->
-      <!-- <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-
-     <v-spacer />
-
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >  -->
-      <!-- <v-icon>mdi-menu</v-icon>
-      </v-btn> -->
     </v-app-bar>
     <v-main>
       <v-container fluid>
@@ -128,7 +103,8 @@ export default {
         {
           hid: "description",
           name: "description",
-          content: "For fantasy premier league player groups competition make your group now with your friends"
+          content:
+            "For fantasy premier league player groups competition make your group now with your friends"
         }
       ]
     };
