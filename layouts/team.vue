@@ -9,26 +9,29 @@
       fixed
       dark
     >
-      <n-link
+          <n-link
         to="/"
         style="
-    display: contents;
-    text-decoration: none;
-    color: white;
-"
+            display: contents;
+            text-decoration: none;
+            color: white;
+        "
       >
+        <div>
+          <v-toolbar-title v-text="title" class="text-left mb-n3 ml-2" />
+          <small class="ml-2">Fantasy premier league</small>
+        </div>
         <v-img
           contain
           :aspect-ratio="1"
           class="pr-1 pl-1"
-          max-width="50"
-          width="50"
-          height="50"
-          max-height="50"
+          max-width="40"
+          width="40"
+          height="40"
+          max-height="40"
           transition="scale-transition"
-          :src="require('~/assets/img/circil.png')"
+          src="/circil.png"
         ></v-img>
-        <v-toolbar-title v-text="title" />
       </n-link>
       <v-spacer />
       <v-switch
@@ -52,10 +55,14 @@
             <v-row style="height:100%" justify="center" align="center">
               <v-card class="text-center">
                 <v-card-text class="headline px-12">
-                  <h2>
-                    {{
-                      $route.params.id ? $route.params.id : "توقع نتائج الجولة"
-                    }}
+                  <h2 v-if="$route.name == 'fixtures'">
+                    المباريات بدرجة الصعوبه
+                  </h2>
+                  <h2 v-if="$route.name == 'results'">
+                    توقع النتائج
+                  </h2>
+                  <h2 v-if="$route.params.id">
+                     {{$route.params.id}}
                   </h2>
                   <!-- <h2>{{$route.name == results ? 'توقع نتائج الجولة' : $route.params.id}}</h2> -->
                 </v-card-text>
@@ -96,7 +103,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "FPL Groups"
+      title: "FPL News"
     };
   },
   methods: {

@@ -217,12 +217,12 @@ export default {
     }
   },
 
-  async getAllFixures({ commit }, teamIn) {
-    // console.log(teamIn);
-    commit("partials/setLoading", true, { root: true });
-    var allTeams;
+  async getAllFixures({commit}) {
+    var fix = {};
     var finalData = [];
-    var popagan = {};
+    var hTeams = {};
+    var allHTeams = [];
+    var allTeams;
     try {
       await this.$axios
         .$get(
@@ -236,134 +236,63 @@ export default {
             .then(teams => {
               allTeams = teams.teams;
               data.forEach((element, index) => {
-                if (
-                  element.team_a == teamIn.id ||
-                  element.team_h == teamIn.id
-                ) {
-                  teams.teams.forEach(team => {
-                    if (
-                      element.team_a == team.id ||
-                      element.team_h == team.id
-                    ) {
-                      popagan[index] = {
-                        hId: element.team_h,
-                        aId: element.team_a,
-                        team_h_difficulty: element.team_h_difficulty,
-                        team_a_difficulty: element.team_a_difficulty,
-                        event: element.event,
-                        name: allTeams[element.team_a - 1].name,
-                        nameH: allTeams[element.team_h - 1].name,
-                        teamAImg: `https://resources.premierleague.com/premierleague/badges/25/t${
-                          allTeams[element.team_a - 1].code
-                        }.png`,
-                        teamHImg: `https://resources.premierleague.com/premierleague/badges/25/t${
-                          allTeams[element.team_h - 1].code
-                        }.png`,
-                        sameId: index
-                      };
-                    }
-                  });
-                }
-              });
-            })
-            .then(data => {
-              const propertyNamesr = Object.keys(popagan);
-              const propertyValuesr = Object.values(popagan);
-              const entriesr = Object.entries(popagan);
-              entriesr.forEach(element => {
-                finalData.push(element[1]);
-              });
-              console.log(finalData);
-              commit("setFixuresData", finalData);
-              commit("partials/setLoading", false, { root: true });
-            });
-          // console.log(finalFix);
-        });
-    } catch (error) {
-      console.log(error);
-      commit("partials/setLoading", false, { root: true });
-    } finally {
-      commit("partials/setLoading", false, { root: true });
-    }
-  },
-  async getAnalyze({ commit }) {
-    // console.log(teamIn);
-    commit("partials/setLoading", true, { root: true });
-    var allTeams;
-    var finalData = [];
-    var popagan = {};
-    try {
-      await this.$axios
-        .$get(
-          `https://intense-refuge-36904.herokuapp.com/https://fantasy.premierleague.com/api/bootstrap-static/`
-        )
-        .then(event => {
-          for (let index = 1; index <= event.events.length; index++) {
-            this.$axios
-              .$get(
-                `https://intense-refuge-36904.herokuapp.com/https://fantasy.premierleague.com/api/entry/2111901/event/${index}/picks/`
-              )
-              .then(data => {
-                data.picks.forEach(el => {
-                  if (el.is_captain == true) {
-                    // console.log(el)
-                    event.elements.forEach(player => {
-                      if (el.element == player.id) {
-                        // console.log(player.first_name);
-                        dispatch("delayToGetData", player.id);
-                      }
-                    });
+                teams.teams.forEach((team, i) => {
+                  if (element.team_a == team.id) {
+                    fix[index] = {
+                      team_h: element.team_h,
+                      team_a: element.team_a,
+                      event:element.event,
+                      teamName: team.name,
+                      team_h_difficulty: element.team_h_difficulty,
+                      team_a_difficulty: element.team_a_difficulty,
+                      sameId: index
+                    };
                   }
                 });
               });
-          }
+            })
+            .then(data => {
+              const propertyNamesr = Object.keys(fix);
+              const propertyValuesr = Object.values(fix);
+              const entriesr = Object.entries(fix);
+              entriesr.forEach(element => {
+                finalData.push(element[1]);
+              });
+
+              finalData.forEach((element, i) => {
+                allTeams.forEach(team => {
+                  if (element.team_h == team.id)
+                    hTeams[i] = { team_h_name: team.name, sameId: i };
+                });
+              });
+
+              const propertyNames = Object.keys(hTeams);
+              const propertyValues = Object.values(hTeams);
+              const entries = Object.entries(hTeams);
+              entries.forEach(element => {
+                allHTeams.push(element[1]);
+              });
+            })
+            .then(data => {
+              let finalFix = [];
+              finalData.forEach(A => {
+                allHTeams.forEach(H => {
+                  if (H.sameId == A.sameId) {
+                    let mainobj = { ...A, ...H };
+                    finalFix.push(mainobj);
+                  }
+                });
+              });
+              commit("setFixuresData",finalFix)
+              console.log(finalFix);
+            });
+          // Object.assign(totalarray,{totalpoints : data.summary_overall_points})
         });
     } catch (error) {
       console.log(error);
-      commit("partials/setLoading", false, { root: true });
+      // commit("partials/setLoading", false, { root: true });
     } finally {
-      commit("partials/setLoading", false, { root: true });
+      // commit("partials/setLoading", false, { root: true });
     }
-  },
-
-  async delayToGetData({}, id) {
-    console.log("dgdf",id)
-    this.$axios
-      .$get(
-        `https://intense-refuge-36904.herokuapp.com/https://fantasy.premierleague.com/api/element-summary/${id}/`
-      )
-      .then(playerPoints => {
-        playerPoints.history.forEach(points => {
-          if (
-            points.element == player.id &&
-            data.entry_history.event == points.round
-          ) {
-            // console.log(points)
-            popagan[data.entry_history.event] = {
-              id: el.element,
-              name: player.first_name + " " + player.second_name,
-              points: points.total_points,
-              round: points.round,
-              assists: points.assists,
-              goals: points.goals_scored,
-              bouns: points.bonus,
-              selected: points.selected
-            };
-          }
-        });
-      })
-      .then(ay => {
-        const propertyNames = Object.keys(popagan);
-        const propertyValues = Object.values(popagan);
-        const entries = Object.entries(popagan);
-        entries.forEach(element => {
-          finalData.push(element[1]);
-        });
-        // console.log(finalData.length)
-        if (finalData.length == 1065) {
-          console.log(finalData);
-          commit("setCapatinData", finalData);
-        }
-      });
   }
 };

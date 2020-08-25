@@ -30,6 +30,13 @@ export default {
       { name: "msapplication-TileImage", content: "/ms-icon-144x144.png" },
       { name: "theme-color", content: "#ffffff" }
     ],
+    script: [
+      {
+        crossorigin:"anonymous",
+        src: 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0&appId=115216769146913&autoLogAppEvents=1',
+        nonce:"MFCNHFsJ",
+      }
+    ],
     link: [
       {
         rel: "apple-touch-icon",

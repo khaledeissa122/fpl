@@ -55,6 +55,7 @@
     <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
+    <div id="fb-root"></div>
   </v-app>
 </template>
 
@@ -82,7 +83,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "FPL Groups"
+      title: "FPL News"
     };
   },
   methods: {
@@ -98,7 +99,7 @@ export default {
   },
   head() {
     return {
-      title: "FPL Groups",
+      title: "FPL News",
       meta: [
         {
           hid: "description",

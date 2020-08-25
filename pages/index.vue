@@ -10,7 +10,7 @@
         max-height="650"
       >
         <v-row style="height:650px" justify="center" align="center">
-          <v-card  color="transparent" dark flat class="text-center">
+          <v-card color="transparent" dark flat class="text-center">
             <v-card-text class="white--text headline">
               <h3>كون مجموعتك الان وانضم للمسابقة</h3>
             </v-card-text>
@@ -24,12 +24,12 @@
             <v-card-actions>
               <v-row justify="center">
                 <v-btn
-                  color="teal"
+                  color="#2c3e50 "
                   class="px-2 mb-3 ml-3"
                   nuxt
-                  to="/results"
+                  to="/fixtures"
                 >
-                  النتائج المتوقعه
+                  جميع المباريات بدرجة الصعوبة
                 </v-btn>
                 <v-btn
                   color="teal"
@@ -43,7 +43,6 @@
                   outlined
                   color="white"
                   class="px-4"
-
                   @click="openVideo = !openVideo"
                 >
                   <v-icon left dark>mdi-information</v-icon>
@@ -69,56 +68,78 @@
         src="/loader3.gif"
       ></v-img>
     </v-row>
-    <v-card v-if="groups" class="mt-n6 elevation-5">
-      <v-card-title>
-        ترتيب المجموعات
-        <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="بحث"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :items="groups"
-        :search="search"
-        no-data-text="نقوم بتحديث اللعبة من فضلك قم بتحديث الصفحة خلال دقائق"
-        no-results-text="لا يوجد مجموعة بهذا الاسم"
-        sort-by="totalpoints"
-        :sort-desc="true"
-      >
-        <template v-slot:item.gwpoint="props">
-          {{ props.item.gwpoint == 0 ? "-" : props.item.gwpoint }}
-        </template>
-        <template v-slot:item.rank="{ item }">
-          {{ item.rank == 1 ? "" : item.rank }}
-          <v-img
-            v-if="item.rank == 1"
-            :class="$vuetify.breakpoint.mobile ? 'image' : ''"
-            contain
-            :aspect-ratio="6"
-            transition="scale-transition"
-            :src="getColor(item.rank)"
-          ></v-img>
-        </template>
-        <template v-slot:item.name="props">
-          <v-card
-            flat
-            color="transparent"
-            nuxt
-            :to="{
-              name: 'groups-id',
-              params: { id: props.item.name }
-            }"
+    <v-row no-gutters justify="center">
+      <v-col sm="12" xs="12" md="8" lg="8">
+        <v-card v-if="groups" class="mt-n6 mb-10 elevation-5">
+          <v-card-title>
+            ترتيب المجموعات
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="بحث"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :items="groups"
+            :search="search"
+            :items-per-page="50"
+            no-data-text="نقوم بتحديث اللعبة من فضلك قم بتحديث الصفحة خلال دقائق"
+            no-results-text="لا يوجد مجموعة بهذا الاسم"
+            sort-by="totalpoints"
+            :sort-desc="true"
           >
-            {{ props.item.name }}
-          </v-card>
-        </template>
-      </v-data-table>
-    </v-card>
+            <template v-slot:item.gwpoint="props">
+              {{ props.item.gwpoint == 0 ? "-" : props.item.gwpoint }}
+            </template>
+            <template v-slot:item.rank="{ item }">
+              {{ item.rank == 1 ? "" : item.rank }}
+              <v-img
+                v-if="item.rank == 1"
+                :class="$vuetify.breakpoint.mobile ? 'image' : ''"
+                contain
+                :aspect-ratio="6"
+                transition="scale-transition"
+                :src="getColor(item.rank)"
+              ></v-img>
+            </template>
+            <template v-slot:item.name="props">
+              <v-card
+                flat
+                color="transparent"
+                nuxt
+                :to="{
+                  name: 'groups-id',
+                  params: { id: props.item.name }
+                }"
+              >
+                {{ props.item.name }}
+              </v-card>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-col>
+
+      <v-col sm="12" md="4" xs="12" lg="4" class="z mt-n6 pr-3">
+        <v-col col="12">
+          <v-row no-gutters justify="center">
+            <iframe
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffantasyplnew%2F&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=115216769146913"
+              width="340"
+              height="500"
+              style="border:none;overflow:hidden"
+              scrolling="no"
+              frameborder="0"
+              allowTransparency="true"
+              allow="encrypted-media"
+            ></iframe>
+          </v-row>
+        </v-col>
+      </v-col>
+    </v-row>
     <NewGroup :openNewGroup="openNewGroup" @close="openNewGroup = false" />
     <Video :openVideo="openVideo" @close="openVideo = false" />
     <!-- <joinToGroup
@@ -146,7 +167,7 @@ export default {
       groupsArr: null,
       sortedGroups: null,
       openNewGroup: false,
-      openVideo:false,
+      openVideo: false,
       teamsData: null,
       search: "",
       headers: [
@@ -191,4 +212,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.z {
+  z-index: 9999 !important;
+}
+</style>

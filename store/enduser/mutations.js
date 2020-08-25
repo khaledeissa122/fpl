@@ -11,6 +11,13 @@ export default {
     state.teams = data
     // console.log(state.groups)
   },
+  setFixuresData(state, data) {
+    state.fixures = data
+    // console.log(state.groups)
+  },
+  setCapatinData(state,data){
+    state.capatin = data
+  }
   // setAuthUserData(state, data) {
   //   state.authUserData = data;
   // }

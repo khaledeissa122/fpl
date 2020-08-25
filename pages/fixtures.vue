@@ -1,9 +1,18 @@
 <template>
-  <v-row justify="center">
+  <v-row no-gutters justify="center">
     <v-col sm="12" xs="12" md="8" lg="8">
       <v-card class="mt-n6 mb-10" width="100%">
         <v-card-title>
-          ترتيب مجموعة {{ $route.params.id ? $route.params.id : "" }}
+          اختر الفريق
+          <v-select
+            class="mr-4"
+            :items="items"
+            item-value="items.id"
+            label="اختر الفريق"
+            item-text="name"
+            @change="getAllFixures"
+            return-object
+          ></v-select>
           <v-spacer></v-spacer>
         </v-card-title>
         <v-row v-if="loading" justify="center" align="center">
@@ -20,82 +29,59 @@
           ></v-img>
         </v-row>
         <v-data-table
-          v-if="teams"
+          v-if="fixures"
           :headers="headers"
-          :items="teams"
+          :items-per-page="50"
+          :items="fixures"
           :sort-desc="true"
           item-key="totalpoints"
           sort-by="totalpoints"
-          :hide-default-footer="true"
         >
-          <template v-slot:item.gwpoints="props">
-            {{ props.item.gwpoints == 0 ? "-" : props.item.gwpoints }}<br />
+          <template v-slot:item.sameId="props">
+            <small
+              class="font-weight-thin mx-5 pa-2 rounded"
+              :style="
+                `background:linear-gradient(to right, ${getColor2(
+                  props.item.team_a_difficulty
+                )} 50%, ${getColor(props.item.team_h_difficulty)} 50%)`
+              "
+              >VS</small
+            >
           </template>
-
           <template v-slot:item.name="props">
-            <h4>{{ props.item.name }}</h4>
-            <small> {{ props.item.teamName }}</small>
-          </template>
+            <span class="subtitle-1 font-weight-bold">
+              {{ props.item.name }}
+            </span>
 
-          <template class="man" v-slot:item.flag="props">
-            <!-- {{ props.item.flag == 0 ? "-" : props.item.flag }} -->
             <v-img
               contain
-              :class="$vuetify.breakpoint.mobile ? 'image' : ''"
-              :aspect-ratio="9"
+              :aspect-ratio="1"
+              class="pr-1 pl-1 mx-2 tab"
+              max-width="30"
+              width="30"
+              height="30"
+              max-height="30"
               transition="scale-transition"
-              :src="props.item.flag"
+              :src="props.item.teamAImg"
             ></v-img>
           </template>
-
-          <template v-slot:item.rank="{ item }">
-            {{ item.rank == 1 ? "" : item.rank }}
+          <template v-slot:item.nameH="props">
             <v-img
-              v-if="item.rank == 1"
               contain
-              :class="$vuetify.breakpoint.mobile ? 'image' : ''"
-              :aspect-ratio="4"
+              :aspect-ratio="1"
+              class="pr-1 pl-1 mx-2 tab"
+              max-width="30"
+              width="30"
+              height="30"
+              max-height="30"
               transition="scale-transition"
-              :src="getColor(item.rank)"
+              :src="props.item.teamHImg"
             ></v-img>
+            <span class="subtitle-1 font-weight-bold">
+              {{ props.item.nameH }}
+            </span>
           </template>
-          <!-- <template v-slot:item.totalpoint="{ item }">
-          <v-chip :color="getColor(item.totalpoint)" dark>{{
-            item.totalpoint
-          }}</v-chip>
-        </template> -->
-          <!-- <template v-slot:item.name="props">
-          <v-card
-            flat
-            color="transparent"
-            nuxt
-            :to="{
-              name: 'groups-id',
-              params: { id: props.item.name }
-            }"
-          >
-            {{ props.item.name }}
-          </v-card>
-        </template> -->
         </v-data-table>
-        <!-- <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-center  font-weight-bold subtitle-1">اسم اللاعب</th>
-            <th class="text-center font-weight-bold subtitle-1">نقاط الاسبوع</th>
-            <th class="text-center font-weight-bold subtitle-1">مجموع النقاط</th>
-          </tr>
-        </thead>
-        <tbody v-if="teams">
-          <tr v-for="team in teams" :key="team.frname">
-            <td class="text-center">{{ team.frname +' '+ team.lsname }}</td>
-            <td class="text-center">{{ team.gwpoints }}</td>
-            <td class="text-center">{{ team.totalpoints }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table> -->
       </v-card>
     </v-col>
     <v-col sm="12" md="4" xs="12" lg="4" class="z mt-n6 pr-3">
@@ -123,45 +109,61 @@ export default {
   layout: "team",
   data() {
     return {
+      init: { id: 1 },
+      items: [
+        { id: 1, name: "Arsenal" },
+        { id: 13, name: "Man Utd" },
+        { id: 5, name: "Chelsea" },
+        { id: 10, name: "Leeds" },
+        { id: 17, name: "Spurs" },
+        { id: 18, name: "West Brom" },
+        { id: 2, name: "Aston Villa" },
+        { id: 12, name: "Man City" },
+        { id: 3, name: "Brighton" },
+        { id: 15, name: "Sheffield Utd" },
+        { id: 7, name: "Everton" },
+        { id: 20, name: "Wolves" },
+        { id: 9, name: "Leicester" },
+        { id: 16, name: "Southampton" },
+        { id: 14, name: "Newcastle" },
+        { id: 4, name: "Burnley" },
+        { id: 19, name: "West Ham" },
+        { id: 11, name: "Liverpool" },
+        { id: 8, name: "Fulham" },
+        { id: 6, name: " Crystal Palace" }
+      ],
       ip: "",
       headers: [
         {
-          text: "# الترتيب",
+          text: "# الجولة",
           align: "center",
           sortable: false,
-          value: "rank"
+          value: "event"
         },
         {
-          text: "الدولة",
-          align: "center",
-          sortable: false,
-          value: "flag"
-        },
-        {
-          text: "اسم اللاعب",
+          text: "  ( H ) الفريق صاحب الارض",
           align: "center",
           sortable: false,
           value: "name"
         },
         {
-          text: "مجموع النقاط",
+          text: "درجة الصعوبة",
           align: "center",
           sortable: false,
-          align: "center",
-          value: "totalpoints"
+          value: "sameId"
         },
         {
+          text: "  ( A ) الفريق الضيف ",
           align: "center",
           sortable: false,
-          text: "نقاط الجوله",
-          value: "gwpoints"
+          value: "nameH"
         }
       ]
     };
   },
   head() {
     return {
-      title: `"FPL News | ${this.$route.params.id} group"`,
+      title: `FPL News | Fixtures`,
       meta: [
         {
           hid: "description",
@@ -173,7 +175,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("enduser", ["getGroupData"]),
+    ...mapActions("enduser", ["getAllFixures"]),
     // async fetchSomething() {
     //   this.$axios;
     //   const ip = await this.$axios.$get(
@@ -181,17 +183,27 @@ export default {
     //   );
     //   this.ip = ip;
     // }
-    getColor(rank) {
-      if (rank == 1)
-        return "https://img.icons8.com/doodle/48/000000/gold-medal.png";
-      else return "";
+    getColor(team_h_difficulty) {
+      if (team_h_difficulty == 5) return "#560000";
+      if (team_h_difficulty == 4) return "#7f1414";
+      if (team_h_difficulty == 3) return "#a93a39";
+      if (team_h_difficulty == 2) return "#13eba2";
+      else return "#00ff87";
+    },
+    getColor2(team_a_difficulty) {
+      if (team_a_difficulty == 5) return "#560000";
+      if (team_a_difficulty == 4) return "#7f1414";
+      if (team_a_difficulty == 3) return "#a93a39";
+      if (team_a_difficulty == 2) return "#13eba2";
+      else return "#00ff87";
     },
     async getData() {
-      await this.getGroupData(this.$route.params.id);
+      let id = { id: 1 };
+      await this.getAllFixures(id);
     }
   },
   computed: {
-    ...mapState("enduser", ["teams"]),
+    ...mapState("enduser", ["fixures"]),
     ...mapState("partials", ["loading"])
   },
   mounted() {
@@ -224,8 +236,10 @@ table tbody .v-data-table__mobile-table-row tr:first-child {
   list-style-position: inside !important;
   list-style-type: simp-chinese-informal;
 }
-// table tbody tr .man {
-//   display: flex;
-//   justify-content: center;
-// }
+.tab {
+  display: inline-table;
+}
+.z {
+  z-index: 9999 !important;
+}
 </style>
