@@ -55,6 +55,9 @@
       </v-img>
     </v-layout>
     <v-row justify="center" align="center">
+      <p v-if="!groups">
+      اذا لم يظهر ترتيب المجموعات قم باعادة تحميل الصفحه
+      </p>
       <v-img
         contain
         v-if="loading"
