@@ -180,7 +180,7 @@ export default {
         }
       });
       commit("partials/setLoading", false, { root: true });
-    }, 6000);
+    }, 8000);
   },
 
   sorting({}, sortData) {
